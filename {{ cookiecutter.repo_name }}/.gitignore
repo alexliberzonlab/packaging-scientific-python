@@ -54,13 +54,27 @@ coverage.xml
 *.log
 
 # Sphinx documentation
-docs/_build/
+docs/build/
+docs/source/generated/
+
+# pytest
+.pytest_cache/
 
 # PyBuilder
 target/
 
 # Editor files
+#mac
+.DS_Store
+*~
+
+#vim
 *.swp
+*.swo
+
+#pycharm
+.idea/*
+
 
 #Ipython Notebook
 .ipynb_checkpoints

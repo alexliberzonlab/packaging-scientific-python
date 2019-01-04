@@ -2,19 +2,27 @@
 Publishing Releases
 ===================
 
-At the end of this section you will have:
+In this section you will:
 
-* Tagged a release of your software
-* Uploaded it to `PyPI <https://pypi.org/>` (Python Package Index) so that
+* Tag a release of your Python package.
+* Upload it to `PyPI <https://pypi.org/>`_ (Python Package Index) so that
   users can download and install it using pip.
 
-1. Choose a version number. The convention following by most scientific Python
+We strongly encourage you to share your code GitHub from the start, which is
+why we covered it in :doc:`preliminaries`. People often overestimate the risks
+and underestimate the benefits of making their research code public, and the
+idea of waiting to make it public "until it's cleaned up" is a punchline, an
+exercise in infinite regress. But *releases* are little different: you should
+wait to publish a release until your package is usable and tested.
+
+#. Choose a version number. The convention followed by most scientific Python
    packages is ``vMAJOR.MINOR.MICRO``, as in ``v1.3.0``. A good number to start
    with is ``v0.1.0``.
 
    These numbers have meanings.
    The goal is to communicate to the user whether upgrading will break anything
-   in *their* code that will need to be updated in turn.
+   in *their* code that will need to be updated in turn. This is
+   `semantic versioning <https://semver.org/>`_.
    
    * Incrementing the ``MICRO`` number (``v1.3.0`` -> ``v1.3.1``) means, "I
      have fixed some bugs, but I have not added any major new features or
@@ -33,10 +41,21 @@ At the end of this section you will have:
    Obviously this is an imprecise system. Think of it a highly-compressed,
    lossy representation of how painful it will be for the user to upgrade.
 
-2. Type ``git status`` and check that you are on the ``master`` branch with no
+#. Update ``release-history.rst`` in the documentation if you have not done so
+   already. (See :doc:`writing-docs`.)  For the first tagged release, you don't
+   need to write much --- some projects just write "Initial release" under the
+   heading with the version and release date. But for every subsequent release,
+   you should list any alterations that could require users of your Python
+   package to change their code. You may also highlight any additions,
+   improvements, and bug fixes. As examples, see the release notes for
+   `the release notes for this small project <https://nsls-ii.github.io/caproto/release-notes.html>`_
+   and
+   `this large project <https://pandas.pydata.org/pandas-docs/stable/whatsnew.html>`_.
+
+#. Type ``git status`` and check that you are on the ``master`` branch with no
    uncommitted code.
 
-3. Mark the release with an empty commit, just to leave a marker. This is
+#. Mark the release with an empty commit, just to leave a marker. This is
    optional, but it makes it easier to find the release when skimming through
    the git history.
 
@@ -44,18 +63,23 @@ At the end of this section you will have:
 
       git commit --allow-empty -m "REL: vX.Y.Z"
 
-4. Tag the commit.
+#. Tag the commit.
 
    .. code-block:: bash
 
-      git tag vX.Y.Z  # Don't forget the leading v
+      git tag -a vX.Y.Z  # Don't forget the leading v
 
-5. Verify that the ``__version__`` attribute is correctly updated.
+   This will create a tag named ``vX.Y.Z``. The ``-a`` flag (strongly
+   recommended) opens up a text editor where you should enter a brief
+   description of the release, such as "This releases fixes some bugs but does
+   not introduce any breaking changes. All users are encouraged to upgrade."
+
+#. Verify that the ``__version__`` attribute is correctly updated.
 
    The version is reported in three places:
 
    1. The git tag
-   2. The version parameter in the ``setup.py`` file
+   2. The ``setup(version=...)`` parameter in the ``setup.py`` file
    3. Your package's ``__version__`` attribute, in Python
 
    `Versioneer <https://github.com/warner/python-versioneer>`_, which was
@@ -69,7 +93,15 @@ At the end of this section you will have:
       import your_package
       your_package.__version__  # should be 'X.Y.Z'
 
-5. Push the new commit and the tag to ``master``.
+   Incidentally, once you resume development and add the first commit after
+   this tag, ``__version__`` will take on a value like ``X.Y.Z+1.g58ad5f7``,
+   where ``+1`` means "1 commit past version X.Y.Z" and ``58ad5f7`` is the
+   first 7 characters of the hash of the current commit. The letter ``g``
+   stands for "git". This is all managed automatically by versioneer and in
+   accordance with the specification in
+   `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_.
+
+#. Push the new commit and the tag to ``master``.
 
    .. code-block:: bash
 
@@ -82,15 +114,23 @@ At the end of this section you will have:
         stored in an organization account, you may need to push to ``upstream``
         as well as ``origin``.
 
-6. `Register for a PyPI account <https://pypi.org/account/register/>`_.
+#. `Register for a PyPI account <https://pypi.org/account/register/>`_.
 
-7. Install twine, a tool for uploading packages to PyPI.
+#. Install twine, a tool for uploading packages to PyPI.
 
    .. code-block:: bash
 
-      python3 -m pip install --user --upgrade twine
+      python3 -m pip install --upgrade twine
 
-8. Publish a release on PyPI.
+#. Remove any extraneous files. If you happen to have any important files in
+   your project directory that are not committed to git, move them first; this
+   will delete them!
+
+   .. code-block:: bash
+
+      git clean -dfx
+
+#. Publish a release on PyPI.
 
    .. code-block:: bash
 
@@ -100,3 +140,8 @@ At the end of this section you will have:
 
 The package is now installable with pip. It may take a couple minutes to become
 available.
+
+If you would also like to make your package available via conda, we recommend
+conda-forge, a community-led collection of recipes and build infrastructure.
+See in particular
+`the section of the conda-forge documentation on adding a recipe <https://conda-forge.org/#add_recipe>`_.

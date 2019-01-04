@@ -3,11 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Packaging Scientific Python
-===========================
+Bootstrap a Scientific Python Library
+=====================================
 
-This is a tutorial with a template for packaging, documenting, and testing
-scientific Python code.
+This is a tutorial with a template for packaging, testing, documenting, and
+publishing scientific Python code.
 
 Do you have a folder of disorganized scientific Python scripts? Are you always
 hunting for code snippets scattered across dozens of Jupyter notebooks? Has it
@@ -22,18 +22,23 @@ Starting from a working, full-featured template, you will:
 * Add automated tests to help ensure that new changes don't break existing
   functionality.
 * Use a free CI (continuous integration) service to automatically run your
-  tests against any proposed changes, and automatically publish your
-  documentation a change is made.
+  tests against any proposed changes and automatically publish the latest
+  documentation when a change is made.
 * Publish a release on PyPI so that users and collaborators can install your
   code with pip.
 
 .. toctree::
    :maxdepth: 2
 
+   philosophy
    preliminaries
    the-code-itself
-   including-data-files
+   guiding-design-principles
+   ci
    writing-docs
-   testing
+   including-data-files
+   publishing-docs
    publishing-releases
-   notes-for-experts
+   advanced-testing
+   environments
+   further-reading
